@@ -1,0 +1,81 @@
+package uitest.m4;
+
+import helper.DemoHelper;
+import helper.DriverFactory;
+import helper.Pages;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+
+public class TestDrive {
+
+
+
+    @Test
+    public void NavigateFactory() {
+        //Se instancia el driver de la clase DriverFactory
+     WebDriver driver = DriverFactory.newDriver();
+        driver.get(Pages.INDEX);
+        DemoHelper.pause();
+
+        driver.get(Pages.SAVINGS);
+        driver.navigate().back(); //Regresa a la página anterior
+
+        WebElement inputName = driver.findElement(By.id("firstName"));
+        System.out.println("The input field is displayed: " + inputName.isDisplayed());
+
+        WebElement button = driver.findElement(By.id("register"));
+        System.out.println("The button contains the text: " + button.getText());
+        driver.quit();
+
+        boolean value = driver instanceof FirefoxDriver;
+        System.out.println("The driver is an instance of " + value);
+
+    }
+
+    @Test
+    public void insertarDatos(){
+        WebDriver driver = DriverFactory.newDriver();
+        driver.get(Pages.INDEX);
+        WebElement inputName = driver.findElement(By.id("firstName"));
+        WebElement inputLastName = driver.findElement(By.id("lastName"));
+        WebElement inputEmail = driver.findElement(By.id("email"));
+        WebElement inputCalendar = driver.findElement(By.xpath("//input[@id='dob']"));
+
+        inputName.sendKeys("John");
+        inputLastName.sendKeys("Doe");
+        inputEmail.sendKeys("huasupoma@gmail.com");
+        inputEmail.clear();
+        inputEmail.sendKeys("huasupoma@gmail.com");
+
+        inputCalendar.sendKeys("22/03/2022");
+        DemoHelper.pause();
+        WebElement checkbox = driver.findElement(By.id("heard-about"));
+
+        Actions actions=new Actions(driver);
+        actions.doubleClick(checkbox).perform();
+
+        DemoHelper.pause();
+        driver.quit();
+    }
+
+    @Test
+    public void selectCombox(){
+        WebDriver driver = DriverFactory.newDriver();
+        driver.get(Pages.LOANS);
+        WebElement select= driver.findElement(By.id("period"));
+        Select period = new Select(select);
+        //period.selectByIndex(2);
+        period.selectByVisibleText("2 months");
+        Assert.assertTrue(select.isDisplayed());
+        DemoHelper.pause();
+        driver.quit();
+    }
+
+}
