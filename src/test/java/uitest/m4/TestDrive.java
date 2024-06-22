@@ -8,9 +8,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.locators.RelativeLocator;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 
 public class TestDrive {
@@ -76,6 +79,42 @@ public class TestDrive {
         Assert.assertTrue(select.isDisplayed());
         DemoHelper.pause();
         driver.quit();
+    }
+
+    @Test
+    public void selectMultiplesElements(){
+        WebDriver driver = DriverFactory.newDriver();
+        driver.get(Pages.INDEX);
+        driver.findElement(By.id("register")).click();
+        List<WebElement> listaElementos;
+        listaElementos = driver.findElements(By.className("invalid-feedback"));
+        for (WebElement elemento: listaElementos){
+            System.out.println(elemento.getText());
+        }
+    }
+
+    @Test
+    public void usingLinkText(){
+        WebDriver driver = DriverFactory.newDriver();
+        driver.get(Pages.INDEX);
+        driver.findElement(By.linkText("Savings")).click();
+        DemoHelper.pause();
+        driver.findElement(By.partialLinkText("Loans")).click();
+        DemoHelper.pause();
+    }
+
+    @Test
+    public  void usingRelativeElements(){
+        WebDriver driver = DriverFactory.newDriver();
+        driver.get(Pages.INDEX);
+        WebElement email = driver.findElement(By.id("email"));
+        //Se usa para tener un elemento relativo a otro
+        RelativeLocator.RelativeBy relativeBy = RelativeLocator.with(By.tagName("input"));
+        //Se obtiene el elemento que está arriba del email
+        WebElement datePicker= driver.findElement(relativeBy.above(email));
+        System.out.println(datePicker.getAttribute("id"));
+
+
     }
 
 }
