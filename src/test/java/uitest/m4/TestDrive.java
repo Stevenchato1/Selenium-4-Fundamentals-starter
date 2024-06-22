@@ -113,8 +113,6 @@ public class TestDrive {
         //Se obtiene el elemento que está arriba del email
         WebElement datePicker= driver.findElement(relativeBy.above(email));
         System.out.println(datePicker.getAttribute("id"));
-
-
     }
 
 }
