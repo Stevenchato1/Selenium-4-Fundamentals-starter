@@ -9,10 +9,14 @@ import org.openqa.selenium.html5.WebStorage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Set;
+
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class ActionsAdvanced {
 
@@ -106,5 +110,17 @@ public class ActionsAdvanced {
         Set<Cookie> cookies = options.getCookies();
         Cookie thing= options.getCookieNamed("thing");
         options.deleteAllCookies();
+    }
+
+    @Test
+    public void fullPageScreenshot() throws IOException {
+        WebDriver driver = DriverFactory.newDriver();
+        driver.get(Pages.INDEX);
+
+        TakesScreenshot ts = (TakesScreenshot) driver;
+        File screenshot = ts.getScreenshotAs(OutputType.FILE);
+        Path destination = Paths.get("failure-screenshot.png");
+
+        Files.move(screenshot.toPath(), destination,REPLACE_EXISTING);
     }
 }
